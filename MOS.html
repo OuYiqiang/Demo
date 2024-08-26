@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音频MOS评分表格</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        audio {
+            width: 150px; 
+            height: 30px; 
+        }
+        .audio-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .mos-rating {
+            /* display: flex; */
+            justify-content: space-around;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>音频MOS评分表格</h1>
+    <p><b>做完后截个屏发给我就行</b></p>
+    <h2>MOS评分标准</h2>
+    <ul>
+        <li><strong>5 - 优秀：</strong> 完全没有或几乎没有失真。</li>
+        <li><strong>4 - 好：</strong> 轻微失真，但不影响可理解性。</li>
+        <li><strong>3 - 一般：</strong> 有明显失真，但仍然可以理解。</li>
+        <li><strong>2 - 差：</strong> 严重失真，理解起来有困难。</li>
+        <li><strong>1 - 很差：</strong> 极度失真，难以理解。</li>
+    </ul>
+    <h2> CASE 1 </h2>
+    <table id="audio-table">
+        <thead>
+            <tr>
+                <th rowspan="2">文本</th>
+                <th colspan="5">音频</th>
+            </tr>
+            <tr>
+                <th>中性</th>
+                <th>喜悦</th>
+                <th>悲伤</th>
+                <th>惊讶</th>
+                <th>愤怒</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 动态生成的表格内容会插入在这里 -->
+        </tbody>
+    </table>
+
+
+
+    <script>
+        const data = [// 在这里插入音频和对应内容
+            {
+                text: "天空变成蓝色",
+                audioFiles: {
+                    neutral: "audio1_neutral.mp3",
+                    happy: "audio1_happy.mp3",
+                    sad: "audio1_sad.mp3",
+                    surprised: "audio1_surprised.mp3",
+                    angry: "audio1_angry.mp3"
+                }
+            },
+            {
+                text: "文本内容2",
+                audioFiles: {
+                    neutral: "audio2_neutral.mp3",
+                    happy: "audio2_happy.mp3",
+                    sad: "audio2_sad.mp3",
+                    surprised: "audio2_surprised.mp3",
+                    angry: "audio2_angry.mp3"
+                }
+            }
+            // 你可以在这里继续添加更多的文本和音频数据
+        ];
+
+        function createAudioRow(text, audioFiles, index) {
+            const row = document.createElement("tr");
+
+            const textCell = document.createElement("td");
+            textCell.textContent = text;
+            row.appendChild(textCell);
+
+            for (const emotion in audioFiles) {
+                const audioCell = document.createElement("td");
+
+                const audioElement = document.createElement("audio");
+                audioElement.controls = true;
+                audioElement.src = audioFiles[emotion];
+                audioElement.type = "audio/mpeg";
+                audioCell.appendChild(audioElement);
+                row.appendChild(audioCell);
+            }
+
+            return row;
+        }
+
+        function createMOSRow(index) {
+            const row = document.createElement("tr");
+
+            const labelCell = document.createElement("td");
+            labelCell.innerHTML = "<b>MOS评分</b>";
+            row.appendChild(labelCell);
+
+            for (let i = 0; i < 5; i++) { // 一行5个评分
+                const mosCell = document.createElement("td");
+                mosCell.className = "mos-rating";
+
+                for (let j = 1; j <= 5; j++) {
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = `mos${index}_${i}`;
+                    input.value = j;
+
+                    mosCell.appendChild(input);
+                    mosCell.appendChild(document.createTextNode(j));
+                }
+
+                row.appendChild(mosCell);
+            }
+
+            return row;
+        }
+
+        const tableBody = document.querySelector("#audio-table tbody");
+
+        data.forEach((item, index) => {
+            const audioRow = createAudioRow(item.text, item.audioFiles, index);
+            const mosRow = createMOSRow(index);
+
+            tableBody.appendChild(audioRow);
+            tableBody.appendChild(mosRow);
+        });
+    </script>
+
+</body>
+</html>

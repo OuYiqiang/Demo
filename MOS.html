@@ -73,7 +73,7 @@
             {
                 text: "天空变成蓝色",
                 audioFiles: {
-                    neutral: "src\wave\bert_vits_1.wav",
+                    neutral: "./src/wave/bert_vits_1.wav",
                     happy: "audio1_happy.mp3",
                     sad: "audio1_sad.mp3",
                     surprised: "audio1_surprised.mp3",
@@ -106,7 +106,7 @@
                 const audioElement = document.createElement("audio");
                 audioElement.controls = true;
                 audioElement.src = audioFiles[emotion];
-                audioElement.type = "audio/mpeg";
+                audioElement.type = "audio/wav";
                 audioCell.appendChild(audioElement);
                 row.appendChild(audioCell);
             }

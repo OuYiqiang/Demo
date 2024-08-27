@@ -5,51 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>音频MOS评分表格</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-        audio {
-            width: 150px; 
-            height: 30px; 
-        }
-        .audio-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .mos-rating {
-            /* display: flex; */
-            justify-content: space-around;
-            align-items: center;
-        }
-    </style>
+
 </head>
 <body>
 
     <h1>音频MOS评分表格</h1>
-    <p><b>做完后截个屏发给我就行</b></p>
+    <p class = "needRead">
+        <b>做完后 表格+标题 整体截个屏发给我就行</b>
+        <a href="./example.html">举例</a>
+    </p>
+   
     <h2>MOS评分标准</h2>
     <ul>
-        <li><strong>5 - 优秀：</strong> 完全没有或几乎没有失真。</li>
-        <li><strong>4 - 好：</strong> 轻微失真，但不影响可理解性。</li>
-        <li><strong>3 - 一般：</strong> 有明显失真，但仍然可以理解。</li>
-        <li><strong>2 - 差：</strong> 严重失真，理解起来有困难。</li>
-        <li><strong>1 - 很差：</strong> 极度失真，难以理解。</li>
+        <li><strong>5 - 优秀：</strong> 听感很清楚，说话流畅。</li>
+        <li><strong>4 - 好：</strong> 听感清楚，比较流畅，有点杂音。</li>
+        <li><strong>3 - 一般：</strong> 听不太清，表达稍有磕绊。</li>
+        <li><strong>2 - 差：</strong> 听不清，表达含糊，杂音很多。</li>
+        <li><strong>1 - 很差：</strong> 完全听不清。</li>
     </ul>
-    <h2> CASE 1 </h2>
-    <table id="audio-table">
+    <h2> Multi </h2>
+    <table id="multi-table">
+        <thead>
+            <tr>
+                <th rowspan="2">文本</th>
+                <th colspan="5">音频</th>
+            </tr>
+            <tr>
+                <th>中性</th>
+                <th>喜悦</th>
+                <th>悲伤</th>
+                <th>惊讶</th>
+                <th>愤怒</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 动态生成的表格内容会插入在这里 -->
+        </tbody>
+    </table>
+    <h2> Vae </h2>
+    <table id="vae-table">
         <thead>
             <tr>
                 <th rowspan="2">文本</th>
@@ -68,32 +62,8 @@
         </tbody>
     </table>
 
-
-
-    <script>
-        const data = [// 在这里插入音频和对应内容
-            {
-                text: "天空变成蓝色",
-                audioFiles: {
-                    neutral: "./src/wave/bert_vits_1.wav",
-                    happy: "audio1_happy.mp3",
-                    sad: "audio1_sad.mp3",
-                    surprised: "audio1_surprised.mp3",
-                    angry: "audio1_angry.mp3"
-                }
-            },
-            {
-                text: "文本内容2",
-                audioFiles: {
-                    neutral: "audio2_neutral.mp3",
-                    happy: "audio2_happy.mp3",
-                    sad: "audio2_sad.mp3",
-                    surprised: "audio2_surprised.mp3",
-                    angry: "audio2_angry.mp3"
-                }
-            }
-            // 你可以在这里继续添加更多的文本和音频数据
-        ];
+    <script type="module">
+        import {MultiData,VaeData} from './wavData.js';
 
         function createAudioRow(text, audioFiles, index) {
             const row = document.createElement("tr");
@@ -143,14 +113,23 @@
             return row;
         }
 
-        const tableBody = document.querySelector("#audio-table tbody");
+        const tableBody = document.querySelector("#multi-table tbody");
+        const tableBody2 = document.querySelector("#vae-table tbody");
 
-        data.forEach((item, index) => {
+        MultiData.forEach((item, index) => {
             const audioRow = createAudioRow(item.text, item.audioFiles, index);
             const mosRow = createMOSRow(index);
 
             tableBody.appendChild(audioRow);
             tableBody.appendChild(mosRow);
+        });
+
+        VaeData.forEach((item, index) => {
+            const audioRow = createAudioRow(item.text, item.audioFiles, index);
+            const mosRow = createMOSRow(index);
+
+            tableBody2.appendChild(audioRow);
+            tableBody2.appendChild(mosRow);
         });
     </script>
 
